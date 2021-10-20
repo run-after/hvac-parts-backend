@@ -7,7 +7,8 @@ const EquipmentSchema = new Schema({
   model: { type: String, required: true },
   serial: {type: String, required: true, unique: true},
   name: { type: String, required: true },
-  type: {type: String, required: true}
+  type: { type: String, required: true },
+  parts: [{type: mongoose.Schema.Types.ObjectId, ref: 'Part'}]
 });
 
 module.exports = mongoose.model('Equipment', EquipmentSchema);
