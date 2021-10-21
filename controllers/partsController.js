@@ -87,7 +87,7 @@ module.exports.edit_part = [
       part.quantity = req.body.quantity;
       part.type = req.body.type;
       part.link = req.body.link;
-      
+
       part.save((err, part) => {
         if (err) { return res.json(err); };
         return res.json(part);
@@ -98,8 +98,8 @@ module.exports.edit_part = [
 
 // DELETE /parts/:id - delete part
 module.exports.delete_part = (req, res, next) => {
-  Part.findByIdAndDelete(req.params.partID, (err, part) => {
-    if (err || !part) { return res.json({ 'message': ['Part not found'] }); };
-    // What to send back if deleted?
+  Part.findByIdAndDelete(req.params.partID, (err, deletedPart) => {
+    if (err || !deletedPart) { return res.json({ 'message': ['Part not found'] }); };
+    return res.json(deletedPart)
   })
 };
