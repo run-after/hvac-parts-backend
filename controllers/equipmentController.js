@@ -55,11 +55,42 @@ module.exports.view_equipment = (req, res, next) => {
 };
 
 // PUT /equipment/:equipmentID - edit equipment
-module.exports.edit_equipment = (req, res, next) => {
-  equipment.findById(req.params.equipmentID, (err, equipment) => {
-    // What do I want to be able to change?
-  });
-};
+module.exports.edit_equipment = [
+  
+  body('manufacturer', 'You must enter a manufacturer').trim().isLength({ min: 1 }).escape(),
+  body('model', 'You must enter a model number').trim().isLength({ min: 1 }).escape(),
+  body('serial', 'You must enter a serial number').trim().isLength({ min: 1 }).escape(),
+  body('name', 'You must enter a unit name').trim().isLength({ min: 1 }).escape(),
+  body('type', 'You must enter a equipment type').trim().isLength({ min: 1 }).escape(),
+  
+  (req, res, next) => {
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+
+      const errorMessages = [];
+      errors.errors.forEach((msg) => {
+        errorMessages.push(msg.msg);
+      });
+
+      return res.json({ 'message': errorMessages });
+    };
+
+    const equipment = Equipment.findById(req.params.equipmentID).exec((err, equip) => {
+      if (err) { return res.json(err); };
+      equip.manufacturer = req.body.manufacturer;
+      equip.model = req.body.model;
+      equip.serial = req.body.serial;
+      equip.name = req.body.name;
+      equip.type = req.body.type;
+      equip.save((err, equip) => {
+        if (err) { return res.json(err); };
+        return res.json(equip);
+      });
+    });
+  }
+];
 
 // DELETE /equipment/:equipmentID - delete equipment
 module.exports.delete_equipment = (req, res, next) => {
