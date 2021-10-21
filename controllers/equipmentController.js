@@ -94,8 +94,8 @@ module.exports.edit_equipment = [
 
 // DELETE /equipment/:equipmentID - delete equipment
 module.exports.delete_equipment = (req, res, next) => {
-  Equipment.findByIdAndDelete(req.params.equipmentID, (err, equipment) => {
-    if (err || !equipment) { return res.json({ 'message': ['Equipment not found'] }); };
-    // What to send back if deleted?
-  })
+  Equipment.findByIdAndDelete(req.params.equipmentID, (err, deletedEquipment) => {
+    if (err || !deletedEquipment) { return res.json({ 'message': ['Equipment not found'] }); };
+    return res.json(deletedEquipment);
+  });
 };
