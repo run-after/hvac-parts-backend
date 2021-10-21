@@ -39,7 +39,7 @@ module.exports.create_equipment = [
       parts: []
     });
 
-    equipment.save((err, post) => {
+    equipment.save((err, equipment) => {
       if (err) { return res.json(err); };
       return res.json(equipment);
     });
@@ -84,6 +84,7 @@ module.exports.edit_equipment = [
       equip.serial = req.body.serial;
       equip.name = req.body.name;
       equip.type = req.body.type;
+      //Will this change parts? Or do I need to include?
       equip.save((err, equip) => {
         if (err) { return res.json(err); };
         return res.json(equip);
